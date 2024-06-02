@@ -1,6 +1,7 @@
 use core::fmt;
 use std::fmt::{Display, Formatter};
 
+use nih_plug::params::enums::Enum;
 use nih_plug_iced::Color;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -17,6 +18,35 @@ pub enum Interval {
     MajorSixth,
     MinorSeventh,
     MajorSeventh,
+}
+
+impl Enum for Interval {
+    fn from_index(index: usize) -> Self {
+        Self::ALL[index]
+    }
+
+    fn to_index(self) -> usize {
+        Self::ALL.iter().position(|&i| i == self).unwrap()
+    }
+
+    fn variants() -> &'static [&'static str] {
+        &[
+            "Unison",
+            "Minor Second",
+            "Major Second",
+            "Minor Third",
+            "Major Third",
+            "Perfect Fourth",
+            "Tritone",
+            "Perfect Fifth",
+            "Minor Sixth",
+            "Major Sixth",
+            "Minor Seventh",
+            "Major Seventh",
+        ]
+    }
+
+    fn ids() -> Option<&'static [&'static str]> { None }
 }
 
 impl Interval {

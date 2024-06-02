@@ -64,7 +64,7 @@ impl IcedEditor for EarTrainerEditor {
     }
 
     fn view(&mut self) -> Element<'_, Self::Message> {
-        let tonic: u32 = self.params.tonic.value().try_into().unwrap();
+        let tonic: u32 = self.params.tonic.value().midi_index() as u32;
 
         let mut active_intervals: [bool; 12] = [false; 12];
         let active_notes = self.shared.active_notes.lock().unwrap();

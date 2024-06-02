@@ -1,9 +1,13 @@
+use intervals::Interval;
 use nih_plug::prelude::*;
 use nih_plug_iced::IcedState;
 use std::sync::{Arc, Mutex};
+use sysex::EartrainerSysExMessage;
+
 
 mod editor;
 mod intervals;
+mod note;
 
 struct EarTrainer {
     params: Arc<EarTrainerParams>,
@@ -21,7 +25,37 @@ struct EarTrainerParams {
     pub gain: FloatParam,
 
     #[id = "tonic"]
-    pub tonic: IntParam,
+    pub tonic: EnumParam<note::Note>,
+
+    #[nested(group="Active intervals")]
+    pub active_intervals: ActiveIntervalsParams,
+}
+#[derive(Params)]
+struct ActiveIntervalsParams {
+    #[id = "activate-1"]
+    pub activate_1: BoolParam,
+    #[id = "activate-b2"]
+    activate_b2: BoolParam,
+    #[id = "activate-2"]
+    activate_2: BoolParam,
+    #[id = "activate-b3"]
+    activate_b3: BoolParam,
+    #[id = "activate-3"]
+    activate_3: BoolParam,
+    #[id = "activate-4"]
+    activate_4: BoolParam,
+    #[id = "activate-b5"]
+    activate_b5: BoolParam,
+    #[id = "activate-5"]
+    activate_5: BoolParam,
+    #[id = "activate-b6"]
+    activate_b6: BoolParam,
+    #[id = "activate-6"]
+    activate_6: BoolParam,
+    #[id = "activate-b7"]
+    activate_b7: BoolParam,
+    #[id = "activate-7"]
+    activate_7: BoolParam,
 }
 
 struct SharedState {
@@ -29,14 +63,14 @@ struct SharedState {
 }
 
 impl EarTrainer {
-    fn on_note_on(&mut self, note_event: NoteEvent<()>) {
+    fn on_note_on(&mut self, note_event: NoteEvent<EartrainerSysExMessage>) {
         if let NoteEvent::NoteOn { note, .. } = note_event {
             let mut active_notes = self.shared.active_notes.lock().unwrap();
             active_notes[note as usize] = true;
         }
     }
 
-    fn on_note_off(&mut self, note_event: NoteEvent<()>) {
+    fn on_note_off(&mut self, note_event: NoteEvent<EartrainerSysExMessage>) {
         if let NoteEvent::NoteOff { note, .. } = note_event {
             let mut active_notes = self.shared.active_notes.lock().unwrap();
             active_notes[note as usize] = false;
@@ -75,9 +109,28 @@ impl Default for EarTrainerParams {
             .with_value_to_string(formatters::v2s_f32_gain_to_db(2))
             .with_string_to_value(formatters::s2v_f32_gain_to_db()),
 
-            tonic: IntParam::new("Tonic", 0, IntRange::Linear { min: 0, max: 11 })
-            .with_value_to_string(formatters::v2s_i32_note_formatter())
-            .with_string_to_value(formatters::s2v_i32_note_formatter()),
+            tonic: EnumParam::new("Tonic", note::Note::C),
+
+            active_intervals: ActiveIntervalsParams::default(),
+        }
+    }
+}
+
+impl Default for ActiveIntervalsParams {
+    fn default() -> Self {
+        Self {
+            activate_1: BoolParam::new("Activate 1", true),
+            activate_b2: BoolParam::new("Activate b2", true),
+            activate_2: BoolParam::new("Activate 2", true),
+            activate_b3: BoolParam::new("Activate b3", true),
+            activate_3: BoolParam::new("Activate 3", true),
+            activate_4: BoolParam::new("Activate 4", true),
+            activate_b5: BoolParam::new("Activate b5", true),
+            activate_5: BoolParam::new("Activate 5", true),
+            activate_b6: BoolParam::new("Activate b6", true),
+            activate_6: BoolParam::new("Activate 6", true),
+            activate_b7: BoolParam::new("Activate b7", true),
+            activate_7: BoolParam::new("Activate 7", true),
         }
     }
 }
@@ -107,7 +160,7 @@ impl Plugin for EarTrainer {
 
     const SAMPLE_ACCURATE_AUTOMATION: bool = true;
 
-    type SysExMessage = ();
+    type SysExMessage = EartrainerSysExMessage;
     type BackgroundTask = ();
 
     fn params(&self) -> Arc<dyn Params> {
@@ -137,6 +190,13 @@ impl Plugin for EarTrainer {
             match event {
                 NoteEvent::NoteOn { .. } => self.on_note_on(event),
                 NoteEvent::NoteOff { .. } => self.on_note_off(event),
+                NoteEvent::MidiSysEx { message, .. } => {
+                    match message {
+                        EartrainerSysExMessage::SetTonic(tonic) => {
+                            nih_log!("Received SetTonic message: {}", tonic);
+                        }
+                    }
+                },
                 _ => (),
             }
             context.send_event(event);

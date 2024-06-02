@@ -822,6 +822,8 @@ dependencies = [
  "musical-note",
  "nih_plug",
  "nih_plug_iced",
+ "sysex",
+ "tonic_relay",
  "tracing",
  "tracing-subscriber",
 ]
@@ -3219,6 +3221,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "sysex"
+version = "0.1.0"
+dependencies = [
+ "nih_plug",
+]
+
+[[package]]
 name = "termcolor"
 version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3396,6 +3405,14 @@ dependencies = [
  "indexmap",
  "toml_datetime",
  "winnow",
+]
+
+[[package]]
+name = "tonic_relay"
+version = "0.1.0"
+dependencies = [
+ "nih_plug",
+ "sysex",
 ]
 
 [[package]]

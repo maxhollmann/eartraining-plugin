@@ -2,5 +2,7 @@
 resolver = "2"
 members = [
   "plugin",
+  "sysex",
+  "tonic_relay",
   "xtask",
 ]
