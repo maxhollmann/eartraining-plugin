@@ -1,0 +1,23 @@
+[package]
+name = "eartraining-plugin"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = ["assert_process_allocs"] }
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = [] }
+nih_plug_iced = { git = "https://github.com/robbert-vdh/nih-plug.git" }
+iced = { version="0.12.1", features=["debug"] }
+iced_native = { version="0.10.3" }
+
+atomic_float = "1.0.0"
+musical-note = "0.1.105"
+
+tracing = "0.1"
+tracing-subscriber = "0.3"

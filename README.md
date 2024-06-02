@@ -1,0 +1,1 @@
+A VST3 / CLAP plugin for eartraining. Inspired by [Max Konyi](https://www.youtube.com/@maxkonyi)'s videos [The Secret of Ear Training](https://www.youtube.com/watch?v=u0P7gh789RI), [Feeling the Major Scale](https://www.youtube.com/watch?v=Y6BPB3Cso00), and [Feeling the Minor Scale](https://www.youtube.com/watch?v=F-wUQh1jEA4).
