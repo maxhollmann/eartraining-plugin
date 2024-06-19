@@ -8,15 +8,12 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const semitones = [];
-      for (let i = 0; i < 12; i++) {
-        if (Math.random() > 0.5)
-          semitones.push(i);
-      }
-      setActiveSemitones(semitones);
+      setActiveSemitones(
+        intervalsByFifth.map((interval) => interval.semiTones).filter(() => Math.random() > 0.5)
+      );
     }, 1500);
     return () => clearInterval(interval);
-  }, [])
+  }, []);
 
   return (
     <div className="container">

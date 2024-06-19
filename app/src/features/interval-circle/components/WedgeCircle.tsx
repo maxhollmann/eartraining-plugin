@@ -1,7 +1,7 @@
-import { Key, useEffect, useState } from "react";
+import { animated, useSpring } from "@react-spring/web";
+import { Key, useEffect } from "react";
 import { Wedge } from "../../../components/svg/Wedge";
 import { FULL_CIRCLE, Point, deg, pointOnCircle } from "../../../utils/geometry";
-import { useSpring } from "@react-spring/web";
 
 export type WedgeCircleWedge = {
   color: string;
@@ -35,6 +35,8 @@ export const WedgeCircle = ({ wedges, gapAngle, startAngle = deg(270) }: WedgeCi
   );
 };
 
+const AnimatedWedge = animated(Wedge);
+
 type SegmentProps = {
   startAngle: number;
   endAngle: number;
@@ -46,39 +48,23 @@ const Segment = ({ startAngle, endAngle, color, active, label }: SegmentProps) =
   const c: Point = [50, 50];
   const [labelX, labelY] = pointOnCircle({ c, r: 33.5, a: (startAngle + endAngle) / 2 });
 
-  const [styles, api] = useSpring(() => ({ expansion: 0 }))
-  const [dummy, setDummy] = useState(0);
+  const [styles, api] = useSpring(() => ({ from: { expansion: 30 } }));
 
   useEffect(() => {
-    if (active) {
-      api.start({
-        expansion: 1,
-      })
-    } else {
-      api.start({
-        expansion: 0,
-      })
-    }
-  }, [active]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDummy((prev) => (prev + 1) % 999);
-    }, 10);
-    return () => clearInterval(interval);
-  }, [])
+    api.start({ to: { expansion: active ? 36.5 : 30 }, config: { duration: 100 } });
+  }, [api, active]);
 
   return (
     <>
-        <Wedge
-          center={c}
-          startAngle={startAngle}
-          endAngle={endAngle}
-          innerRadius={30}
-          outerRadius={30 + 6.5 * styles.expansion.get()}
-          fill={color}
-          fillOpacity={0.5}
-        />
+      <AnimatedWedge
+        center={c}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={30}
+        outerRadius={styles.expansion}
+        fill={color}
+        fillOpacity={0.5}
+      />
       <Wedge
         center={c}
         startAngle={startAngle}
