@@ -1,4 +1,4 @@
-A VST3 / CLAP plugin for eartraining. Inspired by [Max Konyi](https://www.youtube.com/@maxkonyi)'s videos [The Secret of Ear Training](https://www.youtube.com/watch?v=u0P7gh789RI), [Feeling the Major Scale](https://www.youtube.com/watch?v=Y6BPB3Cso00), and [Feeling the Minor Scale](https://www.youtube.com/watch?v=F-wUQh1jEA4).
+VST3 / CLAP plugins to relay what's being played to the main app.
 
 ## Dependencies
 
@@ -8,7 +8,9 @@ sudo apt install libasound2-dev libjack-dev libxcb-shape0-dev libxcb-xfixes0-dev
 
 ## Build
 
-```shell
-cargo xtask bundle eartraining-plugin
-cargo xtask bundle tonic_relay
-```
+* Build & install all packages: `just`
+* Build & install a package and watch the logs: `just try <package>`
+
+Available packages:
+* `eartraining-plugin`
+* `tonic_relay`

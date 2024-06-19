@@ -1,0 +1,13 @@
+dev:
+  pnpm tauri dev
+
+prepare:
+  pnpm install
+
+precommit: format
+  pnpm tsc
+
+format:
+  pnpm format
+  cd src-tauri && cargo fmt
+

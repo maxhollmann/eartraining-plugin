@@ -51,7 +51,7 @@ const Segment = ({ startAngle, endAngle, color, active, label }: SegmentProps) =
   const [styles, api] = useSpring(() => ({ from: { expansion: 30 } }));
 
   useEffect(() => {
-    api.start({ to: { expansion: active ? 36.5 : 30 }, config: { duration: 100 } });
+    api.start({ to: { expansion: active ? 36.5 : 30 } });
   }, [api, active]);
 
   return (

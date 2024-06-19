@@ -21,5 +21,5 @@ sudo apt install libwebkit2gtk-4.1-dev \
 
 mise install
 
-pnpm tauri dev
+just dev
 ```

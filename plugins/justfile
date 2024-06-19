@@ -1,0 +1,13 @@
+default: (install "eartraining-plugin") (install "tonic_relay")
+
+build package:
+  cargo run --package xtask --release -- bundle {{package}}
+
+install package: (build package)
+  cp target/bundled/{{package}}.clap ~/vst
+
+log:
+  echo "Run bitwig-studio like this: NIH_LOG=$(pwd)/log.txt bitwig-studio"
+  tail -f -n 0 log.txt
+
+try package: (install package) log
