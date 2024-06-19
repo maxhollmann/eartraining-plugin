@@ -10,4 +10,3 @@ precommit: format
 format:
   pnpm format
   cd src-tauri && cargo fmt
-
